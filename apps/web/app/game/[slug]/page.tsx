@@ -1,12 +1,7 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { use } from "react";
-import { useState } from "react";
 
-import { games } from "../../../data/games";
-import { Language, translations } from "../../../data/translations";
+import { prisma } from "../../../lib/prisma";
 
 type Props = {
     params: Promise<{
@@ -14,120 +9,68 @@ type Props = {
     }>;
 };
 
-export default function GamePage({ params }: Props) {
-    const { slug } = use(params);
+export default async function GamePage({ params }: Props) {
+    const { slug } = await params;
 
-    const [language, setLanguage] =
-        useState<Language>("fr");
-
-    const text = translations[language];
-
-    const game = games.find(
-        (item) => item.slug === slug
-    );
+    const game = await prisma.game.findUnique({
+        where: { slug },
+    });
 
     if (!game) {
         return (
             <main className="min-h-screen bg-black p-12 text-white">
-                Jeu introuvable
+                <h1 className="text-4xl font-bold">Jeu introuvable</h1>
             </main>
         );
     }
 
     return (
         <main className="min-h-screen bg-black text-white">
-
-            <div className="absolute right-8 top-8 z-10">
-                <select
-                    value={language}
-                    onChange={(e) =>
-                        setLanguage(e.target.value as Language)
-                    }
-                    className="rounded-xl bg-zinc-900 px-4 py-2"
-                >
-                    <option value="fr">Français</option>
-                    <option value="en">English</option>
-                </select>
-            </div>
-
-
             <section className="relative h-[500px]">
-                <Image
-                    src={game.image}
-                    alt={game.title}
-                    fill
-                    className="object-cover"
-                />
-
+                <Image src={game.image} alt={game.title} fill className="object-cover" />
                 <div className="absolute inset-0 bg-black/70" />
 
                 <div className="absolute bottom-12 left-12">
-                    <h1 className="text-7xl font-bold">
-                        {game.title}
-                    </h1>
-
-                    <p className="mt-4 text-xl text-gray-300">
-                        {game.developer}
-                    </p>
+                    <h1 className="text-7xl font-bold">{game.title}</h1>
+                    <p className="mt-4 text-xl text-gray-300">{game.developer}</p>
                 </div>
             </section>
 
-
             <section className="grid grid-cols-3 gap-12 px-12 py-12">
-
                 <div className="col-span-2">
+                    <h2 className="text-3xl font-bold">Description</h2>
 
-                    <h2 className="text-3xl font-bold">
-                        {text.description}
-                    </h2>
-
-                    <p className="mt-6 text-lg text-gray-400">
-                        {game.description}
-                    </p>
-
+                    <p className="mt-6 text-lg text-gray-400">{game.description}</p>
 
                     {game.officialWebsite && (
                         <Link
                             href={game.officialWebsite}
                             className="mt-10 inline-block rounded-xl bg-white px-6 py-3 text-black"
                         >
-                            {text.website}
+                            Site officiel
                         </Link>
                     )}
-
                 </div>
 
-
                 <aside className="rounded-3xl bg-zinc-900 p-8">
+                    <h3 className="mb-6 text-2xl font-bold">Informations</h3>
 
-                    <h3 className="mb-6 text-2xl font-bold">
-                        {text.information}
-                    </h3>
-
-                    <p>{text.studio} : {game.developer}</p>
-                    <p>{text.publisher} : {game.publisher}</p>
-                    <p>{text.country} : {game.country}</p>
+                    <p>Studio : {game.developer}</p>
+                    <p>Éditeur : {game.publisher}</p>
+                    <p>Pays : {game.country}</p>
 
                     <hr className="my-5 border-zinc-700" />
 
-                    <p>{text.genre} : {game.genre}</p>
-                    <p>{text.date} : {game.releaseDate}</p>
-                    <p>{text.status} : {game.status}</p>
+                    <p>Genre : {game.genre}</p>
+                    <p>Date : {game.releaseDate.toISOString().slice(0, 10)}</p>
+                    <p>Statut : {game.status}</p>
 
                     <hr className="my-5 border-zinc-700" />
 
-                    <p>
-                        Coop : {game.coop ? text.yes : text.no}
-                    </p>
-
-                    <p>
-                        Manette :{" "}
-                        {game.controller ? text.yes : text.no}
-                    </p>
-
+                    <p>Coop : {game.coop ? "Oui" : "Non"}</p>
+                    <p>Manette : {game.controller ? "Oui" : "Non"}</p>
                 </aside>
             </section>
-
         </main>
     );
 }

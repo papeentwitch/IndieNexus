@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "tsx prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts",
+    "import:games": "tsx scripts/import-games.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
