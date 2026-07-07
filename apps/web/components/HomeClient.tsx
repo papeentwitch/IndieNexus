@@ -8,6 +8,8 @@ import { Header } from "./Header";
 import { SearchBar } from "./SearchBar";
 
 import { Language, translations } from "../data/translations";
+import { useEffect } from "react";
+import { LANGUAGE_STORAGE_KEY } from "../lib/language";
 
 type Game = {
     id: number;
@@ -38,6 +40,19 @@ type Props = {
 
 export function HomeClient({ games, upcomingGames, platforms }: Props) {
     const [language, setLanguage] = useState<Language>("fr");
+
+    useEffect(() => {
+        const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+
+        if (savedLanguage === "fr" || savedLanguage === "en") {
+            setLanguage(savedLanguage);
+        }
+    }, []);
+
+    function handleLanguageChange(value: Language) {
+        setLanguage(value);
+        localStorage.setItem(LANGUAGE_STORAGE_KEY, value);
+    }
     const [search, setSearch] = useState("");
     const [platform, setPlatform] = useState("");
     const [status, setStatus] = useState("");
@@ -71,7 +86,7 @@ export function HomeClient({ games, upcomingGames, platforms }: Props) {
         <main className="min-h-screen bg-black text-white">
             <Header
                 language={language}
-                setLanguage={setLanguage}
+                setLanguage={handleLanguageChange}
                 text={{
                     games: text.games,
                     news: text.news,

@@ -114,7 +114,13 @@ async function main() {
 
         console.log("Imported:", game.name);
     }
+    await prisma.$executeRaw`
+  UPDATE Game
+  SET screenshots = image
+  WHERE screenshots IS NULL OR screenshots = ''
+`;
 
+    console.log("Missing screenshots repaired with main images.");
     console.log("RAWG import completed");
 }
 
