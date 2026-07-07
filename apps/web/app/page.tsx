@@ -37,10 +37,14 @@ export default function Home() {
         <div className="grid grid-cols-3 gap-8">
           {games.map((game) => (
             <GameCard
-              key={game.title}
+              key={game.id}
               title={game.title}
+              description={game.description}
               genre={game.genre}
-              platform={game.platform}
+              platforms={game.platforms}
+              releaseDate={game.releaseDate}
+              coop={game.coop}
+              controller={game.controller}
             />
           ))}
         </div>

@@ -1,19 +1,43 @@
 export const games = [
   {
+    id: 1,
     title: "Hollow Woods",
-    genre: "Adventure • Mystery",
-    platform: "PC • Switch",
+    description:
+      "A mysterious adventure game set in an ancient forgotten forest.",
+    genre: "Adventure",
+    platforms: ["PC", "Switch"],
+    releaseDate: "2026",
+    status: "Coming soon",
+    multiplayer: false,
+    coop: false,
+    controller: true,
   },
 
   {
+    id: 2,
     title: "Neon Abyss Zero",
-    genre: "Roguelike • Action",
-    platform: "PC • PlayStation",
+    description:
+      "A fast roguelike action game in a cyberpunk universe.",
+    genre: "Roguelike",
+    platforms: ["PC", "PlayStation"],
+    releaseDate: "2026",
+    status: "Coming soon",
+    multiplayer: true,
+    coop: true,
+    controller: true,
   },
 
   {
+    id: 3,
     title: "Lost Planet Garden",
-    genre: "Simulation • Cozy",
-    platform: "PC • Xbox",
+    description:
+      "Build and explore a peaceful world on a distant planet.",
+    genre: "Simulation",
+    platforms: ["PC", "Xbox"],
+    releaseDate: "2027",
+    status: "In development",
+    multiplayer: false,
+    coop: false,
+    controller: true,
   },
 ];
