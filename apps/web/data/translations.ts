@@ -11,6 +11,10 @@ export const translations = {
     allPlatforms: "Toutes les plateformes",
     coop: "Coop",
     controller: "Manette",
+    allStatus: "Tous les statuts",
+    released: "Disponible",
+    upcoming: "Prochainement",
+    development: "En développement",
   },
 
   en: {
@@ -25,6 +29,10 @@ export const translations = {
     allPlatforms: "All platforms",
     coop: "Coop",
     controller: "Controller",
+    allStatus: "All status",
+    released: "Released",
+    upcoming: "Coming soon",
+    development: "In development",
   },
 };
 

@@ -17,6 +17,8 @@ export default function Home() {
 
   const [platform, setPlatform] = useState("");
 
+  const [status, setStatus] = useState("");
+
   const [coop, setCoop] = useState(false);
 
   const [controller, setController] = useState(false);
@@ -35,6 +37,9 @@ export default function Home() {
     const matchesPlatform =
       !platform || game.platforms.includes(platform);
 
+    const matchesStatus =
+      !status || game.status === status;
+
     const matchesCoop =
       !coop || game.coop;
 
@@ -44,6 +49,7 @@ export default function Home() {
     return (
       matchesSearch &&
       matchesPlatform &&
+      matchesStatus &&
       matchesCoop &&
       matchesController
     );
@@ -81,12 +87,18 @@ export default function Home() {
         <Filters
           platform={platform}
           setPlatform={setPlatform}
+          status={status}
+          setStatus={setStatus}
           coop={coop}
           setCoop={setCoop}
           controller={controller}
           setController={setController}
           text={{
             allPlatforms: text.allPlatforms,
+            allStatus: text.allStatus,
+            released: text.released,
+            upcoming: text.upcoming,
+            development: text.development,
             coop: text.coop,
             controller: text.controller,
           }}
