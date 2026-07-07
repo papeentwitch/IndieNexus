@@ -104,25 +104,40 @@ export default function Home() {
           }}
         />
 
-        <h3 className="mb-8 text-2xl font-bold">
-          {text.discoveries}
-        </h3>
+        <div className="mb-8 flex items-center justify-between">
+          <h3 className="text-2xl font-bold">
+            {text.discoveries}
+          </h3>
 
-        <div className="grid grid-cols-3 gap-8">
-          {filteredGames.map((game) => (
-            <GameCard
-              key={game.id}
-              title={game.title}
-              description={game.description}
-              genre={game.genre}
-              platforms={game.platforms}
-              releaseDate={game.releaseDate}
-              image={game.image}
-              coop={game.coop}
-              controller={game.controller}
-            />
-          ))}
+          <span className="text-sm text-gray-400">
+            {filteredGames.length} {text.results}
+          </span>
         </div>
+
+        {filteredGames.length === 0 ? (
+          <div className="rounded-3xl border border-zinc-800 bg-zinc-900 p-12 text-center text-gray-400">
+            {text.noResults}
+          </div>
+        ) : (
+          <div className="grid grid-cols-3 gap-8">
+            {filteredGames.map((game) => (
+              <GameCard
+                key={game.id}
+                title={game.title}
+                description={game.description}
+                genre={game.genre}
+                platforms={game.platforms}
+                releaseDate={game.releaseDate}
+                image={game.image}
+                developer={game.developer}
+                country={game.country}
+                coop={game.coop}
+                controller={game.controller}
+                slug={game.slug}
+              />
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );

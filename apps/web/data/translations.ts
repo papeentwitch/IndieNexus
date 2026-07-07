@@ -15,6 +15,8 @@ export const translations = {
     released: "Disponible",
     upcoming: "Prochainement",
     development: "En développement",
+    results: "jeux trouvés",
+    noResults: "Aucun jeu trouvé",
   },
 
   en: {
@@ -33,6 +35,8 @@ export const translations = {
     released: "Released",
     upcoming: "Coming soon",
     development: "In development",
+    results: "games found",
+    noResults: "No games found",
   },
 };
 
