@@ -33,6 +33,11 @@ model Game {
   releaseDateText  String?
   hasDemo          Boolean @default(false)
   hasPlaytest      Boolean @default(false)
+  isAvailableSteam Boolean @default(true)
+  isFree            Boolean @default(false)
+  price             String?
+  discount          Int?
+  vrOnly            Boolean @default(false)
 
   screenshots     String?
   stores          String?
