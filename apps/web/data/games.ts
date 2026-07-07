@@ -8,6 +8,8 @@ export const games = [
     platforms: ["PC", "Switch"],
     releaseDate: "2026-04-15",
     status: "upcoming",
+    image:
+      "https://images.unsplash.com/photo-1448375240586-882707db888b",
     multiplayer: false,
     coop: false,
     controller: true,
@@ -22,6 +24,8 @@ export const games = [
     platforms: ["PC", "PlayStation"],
     releaseDate: "2026-08-20",
     status: "development",
+    image:
+      "https://images.unsplash.com/photo-1542751371-adc38448a05e",
     multiplayer: true,
     coop: true,
     controller: true,
@@ -36,6 +40,8 @@ export const games = [
     platforms: ["PC", "Xbox"],
     releaseDate: "2025-11-10",
     status: "released",
+    image:
+      "https://images.unsplash.com/photo-1493711662062-fa541adb3fc8",
     multiplayer: false,
     coop: false,
     controller: true,

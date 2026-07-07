@@ -117,6 +117,7 @@ export default function Home() {
               genre={game.genre}
               platforms={game.platforms}
               releaseDate={game.releaseDate}
+              image={game.image}
               coop={game.coop}
               controller={game.controller}
             />
