@@ -11,7 +11,9 @@
     "import:games": "tsx scripts/import-games.ts",
     "import:steam": "tsx scripts/import-steam.ts",
     "import:steam-upcoming": "tsx scripts/import-steam-upcoming.ts",
-    "translate:games": "tsx scripts/translate-games.ts"
+    "translate:games": "tsx scripts/translate-games.ts",
+    "import:steam-demos": "tsx scripts/import-steam-demos.ts",
+    "import:steam-playtests": "tsx scripts/import-steam-playtests.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",

@@ -24,6 +24,8 @@ type Game = {
     country: string;
     coop: boolean;
     controller: boolean;
+    hasDemo: boolean;
+    hasPlaytest: boolean;
     translations: {
         id: number;
         gameId: number;
@@ -88,10 +90,16 @@ export function HomeClient({ games, upcomingGames, platforms }: Props) {
             game.genre.toLowerCase().includes(query) ||
             game.platforms.toLowerCase().includes(query);
 
+        const matchesStatus =
+            !status ||
+            game.status === status ||
+            (status === "demo" && game.hasDemo) ||
+            (status === "playtest" && game.hasPlaytest);
+
         return (
             matchesSearch &&
             (!platform || gamePlatforms.includes(platform)) &&
-            (!status || game.status === status) &&
+            matchesStatus &&
             (!coop || game.coop) &&
             (!controller || game.controller)
         );
