@@ -1,6 +1,7 @@
 type Props = {
     platform: string;
     setPlatform: (value: string) => void;
+    platforms: string[];
 
     status: string;
     setStatus: (value: string) => void;
@@ -25,6 +26,7 @@ type Props = {
 export function Filters({
     platform,
     setPlatform,
+    platforms,
     status,
     setStatus,
     coop,
@@ -37,27 +39,27 @@ export function Filters({
         <div className="mb-10 flex flex-wrap gap-4">
             <select
                 value={platform}
-                onChange={(e) => setPlatform(e.target.value)}
+                onChange={(event) => setPlatform(event.target.value)}
                 className="rounded-xl bg-zinc-900 px-4 py-3"
             >
                 <option value="">{text.allPlatforms}</option>
-                <option>PC</option>
-                <option>Switch</option>
-                <option>Xbox</option>
-                <option>PlayStation</option>
+
+                {platforms.map((item) => (
+                    <option key={item} value={item}>
+                        {item}
+                    </option>
+                ))}
             </select>
 
             <select
                 value={status}
-                onChange={(e) => setStatus(e.target.value)}
+                onChange={(event) => setStatus(event.target.value)}
                 className="rounded-xl bg-zinc-900 px-4 py-3"
             >
                 <option value="">{text.allStatus}</option>
                 <option value="released">{text.released}</option>
                 <option value="upcoming">{text.upcoming}</option>
-                <option value="development">
-                    {text.development}
-                </option>
+                <option value="development">{text.development}</option>
             </select>
 
             <button

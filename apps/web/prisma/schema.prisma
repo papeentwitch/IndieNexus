@@ -33,8 +33,22 @@ model Game {
   screenshots     String?
   stores          String?
   tags            String?
+  translations GameTranslation[]
 
   rawgId          Int?
   updatedAt       DateTime @default(now()) @updatedAt
   createdAt       DateTime @default(now())
+}
+model GameTranslation {
+  id          Int    @id @default(autoincrement())
+
+  gameId      Int
+  locale      String
+
+  title       String
+  description String
+
+  game        Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@unique([gameId, locale])
 }

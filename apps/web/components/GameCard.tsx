@@ -16,10 +16,7 @@ type Props = {
 };
 
 function shortDescription(description: string) {
-  if (description.length <= 140) {
-    return description;
-  }
-
+  if (description.length <= 140) return description;
   return `${description.slice(0, 140).trim()}...`;
 }
 
@@ -36,11 +33,25 @@ export function GameCard({
   coop,
   controller,
 }: Props) {
+  const hasImage = image && image.trim().length > 0;
+
   return (
     <Link href={`/game/${slug}`} className="block h-full">
       <article className="flex h-full flex-col overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900 transition hover:-translate-y-1 hover:border-zinc-600">
-        <div className="relative h-48 shrink-0">
-          <Image src={image} alt={title} fill className="object-cover" />
+        <div className="relative h-48 shrink-0 bg-zinc-800">
+          {hasImage ? (
+            <Image
+              src={image}
+              alt={title}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover"
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center text-sm text-gray-500">
+              No image
+            </div>
+          )}
         </div>
 
         <div className="flex flex-1 flex-col p-6">
@@ -48,7 +59,10 @@ export function GameCard({
             <span className="rounded-full bg-zinc-800 px-3 py-1 text-xs">
               {genre}
             </span>
-            <span className="shrink-0 text-xs text-gray-500">{releaseDate}</span>
+
+            <span className="shrink-0 text-xs text-gray-500">
+              {releaseDate}
+            </span>
           </div>
 
           <h3 className="text-xl font-bold">{title}</h3>
@@ -63,10 +77,7 @@ export function GameCard({
 
           <div className="mt-auto flex flex-wrap gap-2 pt-5 text-xs">
             {platforms.slice(0, 3).map((platform) => (
-              <span
-                key={platform}
-                className="rounded-full bg-zinc-800 px-3 py-1"
-              >
+              <span key={platform} className="rounded-full bg-zinc-800 px-3 py-1">
                 {platform}
               </span>
             ))}

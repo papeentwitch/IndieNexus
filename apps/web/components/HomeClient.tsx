@@ -23,17 +23,20 @@ type Game = {
     country: string;
     coop: boolean;
     controller: boolean;
+    translations: {
+        locale: string;
+        title: string;
+        description: string;
+    }[];
 };
 
 type Props = {
     games: Game[];
     upcomingGames: Game[];
+    platforms: string[];
 };
 
-export function HomeClient({
-    games,
-    upcomingGames,
-}: Props) {
+export function HomeClient({ games, upcomingGames, platforms }: Props) {
     const [language, setLanguage] = useState<Language>("fr");
     const [search, setSearch] = useState("");
     const [platform, setPlatform] = useState("");
@@ -45,7 +48,9 @@ export function HomeClient({
 
     const filteredGames = games.filter((game) => {
         const query = search.toLowerCase();
-        const platforms = game.platforms.split(",");
+        const gamePlatforms = game.platforms
+            .split(",")
+            .map((item) => item.trim());
 
         const matchesSearch =
             game.title.toLowerCase().includes(query) ||
@@ -55,7 +60,7 @@ export function HomeClient({
 
         return (
             matchesSearch &&
-            (!platform || platforms.includes(platform)) &&
+            (!platform || gamePlatforms.includes(platform)) &&
             (!status || game.status === status) &&
             (!coop || game.coop) &&
             (!controller || game.controller)
@@ -79,13 +84,18 @@ export function HomeClient({
 
                 <p className="mt-6 max-w-xl text-xl text-gray-400">{text.subtitle}</p>
 
-                <SearchBar placeholder={text.search} value={search} onChange={setSearch} />
+                <SearchBar
+                    placeholder={text.search}
+                    value={search}
+                    onChange={setSearch}
+                />
             </section>
 
             <section className="px-12">
                 <Filters
                     platform={platform}
                     setPlatform={setPlatform}
+                    platforms={platforms}
                     status={status}
                     setStatus={setStatus}
                     coop={coop}
@@ -122,10 +132,20 @@ export function HomeClient({
                                 key={game.id}
                                 slug={game.slug}
                                 title={game.title}
-                                description={game.description}
+                                description={
+                                    language === "fr"
+                                        ? game.translations.find(
+                                            (item) => item.locale === "fr"
+                                        )?.description ?? game.description
+                                        : game.description
+                                }
                                 genre={game.genre}
-                                platforms={game.platforms.split(",")}
-                                releaseDate={new Date(game.releaseDate).toISOString().slice(0, 10)}
+                                platforms={game.platforms
+                                    .split(",")
+                                    .map((item) => item.trim())}
+                                releaseDate={new Date(game.releaseDate)
+                                    .toISOString()
+                                    .slice(0, 10)}
                                 image={game.image}
                                 developer={game.developer}
                                 country={game.country}
@@ -136,53 +156,36 @@ export function HomeClient({
                     </div>
                 )}
             </section>
+
             <section className="px-12 py-20">
-
-                <h3 className="mb-8 text-3xl font-bold">
-                    {text.upcomingReleases}
-                </h3>
-
+                <h3 className="mb-8 text-3xl font-bold">{text.upcomingReleases}</h3>
 
                 <div className="grid grid-cols-3 gap-8">
-
                     {upcomingGames.map((game) => (
-
                         <GameCard
-
                             key={game.id}
-
                             slug={game.slug}
-
                             title={game.title}
-
-                            description={game.description}
-
-                            genre={game.genre}
-
-                            platforms={game.platforms.split(",")}
-
-                            releaseDate={
-                                new Date(game.releaseDate)
-                                    .toISOString()
-                                    .slice(0, 10)
+                            description={
+                                language === "fr"
+                                    ? game.translations.find(
+                                        (item) => item.locale === "fr"
+                                    )?.description ?? game.description
+                                    : game.description
                             }
-
+                            genre={game.genre}
+                            platforms={game.platforms.split(",").map((item) => item.trim())}
+                            releaseDate={new Date(game.releaseDate)
+                                .toISOString()
+                                .slice(0, 10)}
                             image={game.image}
-
                             developer={game.developer}
-
                             country={game.country}
-
                             coop={game.coop}
-
                             controller={game.controller}
-
                         />
-
                     ))}
-
                 </div>
-
             </section>
         </main>
     );
