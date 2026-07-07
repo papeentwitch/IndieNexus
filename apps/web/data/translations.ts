@@ -28,6 +28,7 @@ export const translations = {
     yes: "Oui",
     no: "Non",
     website: "Site officiel",
+    upcomingReleases: "📅 Prochaines sorties",
   },
 
   en: {
@@ -59,6 +60,7 @@ export const translations = {
     yes: "Yes",
     no: "No",
     website: "Website",
+    upcomingReleases: "📅 Upcoming releases",
   },
 };
 

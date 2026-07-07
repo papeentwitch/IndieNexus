@@ -26,5 +26,15 @@ model Game {
   steamUrl        String?
   officialWebsite String?
   trailerUrl      String?
+  rating          Float?
+  metacritic      Int?
+  playtime        Int?
+
+  screenshots     String?
+  stores          String?
+  tags            String?
+
+  rawgId          Int?
+  updatedAt       DateTime @default(now()) @updatedAt
   createdAt       DateTime @default(now())
 }

@@ -27,9 +27,13 @@ type Game = {
 
 type Props = {
     games: Game[];
+    upcomingGames: Game[];
 };
 
-export function HomeClient({ games }: Props) {
+export function HomeClient({
+    games,
+    upcomingGames,
+}: Props) {
     const [language, setLanguage] = useState<Language>("fr");
     const [search, setSearch] = useState("");
     const [platform, setPlatform] = useState("");
@@ -131,6 +135,54 @@ export function HomeClient({ games }: Props) {
                         ))}
                     </div>
                 )}
+            </section>
+            <section className="px-12 py-20">
+
+                <h3 className="mb-8 text-3xl font-bold">
+                    {text.upcomingReleases}
+                </h3>
+
+
+                <div className="grid grid-cols-3 gap-8">
+
+                    {upcomingGames.map((game) => (
+
+                        <GameCard
+
+                            key={game.id}
+
+                            slug={game.slug}
+
+                            title={game.title}
+
+                            description={game.description}
+
+                            genre={game.genre}
+
+                            platforms={game.platforms.split(",")}
+
+                            releaseDate={
+                                new Date(game.releaseDate)
+                                    .toISOString()
+                                    .slice(0, 10)
+                            }
+
+                            image={game.image}
+
+                            developer={game.developer}
+
+                            country={game.country}
+
+                            coop={game.coop}
+
+                            controller={game.controller}
+
+                        />
+
+                    ))}
+
+                </div>
+
             </section>
         </main>
     );

@@ -8,5 +8,23 @@ export default async function Home() {
     },
   });
 
-  return <HomeClient games={games} />;
+  const upcomingGames =
+    await prisma.game.findMany({
+      where: {
+        status: "upcoming",
+      },
+
+      orderBy: {
+        releaseDate: "asc",
+      },
+
+      take: 12,
+    });
+
+  return (
+    <HomeClient
+      games={games}
+      upcomingGames={upcomingGames}
+    />
+  );
 }

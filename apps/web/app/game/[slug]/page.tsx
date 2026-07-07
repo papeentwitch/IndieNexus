@@ -19,58 +19,137 @@ export default async function GamePage({ params }: Props) {
     if (!game) {
         return (
             <main className="min-h-screen bg-black p-12 text-white">
-                <h1 className="text-4xl font-bold">Jeu introuvable</h1>
+                Jeu introuvable
             </main>
         );
     }
 
     return (
         <main className="min-h-screen bg-black text-white">
+
             <section className="relative h-[500px]">
-                <Image src={game.image} alt={game.title} fill className="object-cover" />
+
+                <Image
+                    src={game.image}
+                    alt={game.title}
+                    fill
+                    className="object-cover"
+                />
+
                 <div className="absolute inset-0 bg-black/70" />
 
                 <div className="absolute bottom-12 left-12">
-                    <h1 className="text-7xl font-bold">{game.title}</h1>
-                    <p className="mt-4 text-xl text-gray-300">{game.developer}</p>
+
+                    <h1 className="text-7xl font-bold">
+                        {game.title}
+                    </h1>
+
+                    <p className="mt-4 text-xl text-gray-300">
+                        {game.developer}
+                    </p>
+
                 </div>
+
             </section>
+
 
             <section className="grid grid-cols-3 gap-12 px-12 py-12">
+
                 <div className="col-span-2">
-                    <h2 className="text-3xl font-bold">Description</h2>
 
-                    <p className="mt-6 text-lg text-gray-400">{game.description}</p>
+                    <h2 className="text-3xl font-bold">
+                        Description
+                    </h2>
 
-                    {game.officialWebsite && (
-                        <Link
-                            href={game.officialWebsite}
-                            className="mt-10 inline-block rounded-xl bg-white px-6 py-3 text-black"
-                        >
-                            Site officiel
-                        </Link>
-                    )}
+                    <p className="mt-6 whitespace-pre-line text-lg text-gray-400">
+                        {game.description}
+                    </p>
+
+
+                    <div className="mt-10 flex gap-4">
+
+                        {game.officialWebsite && (
+                            <Link
+                                href={game.officialWebsite}
+                                className="rounded-xl bg-white px-6 py-3 text-black"
+                            >
+                                Site officiel
+                            </Link>
+                        )}
+
+                    </div>
+
                 </div>
 
-                <aside className="rounded-3xl bg-zinc-900 p-8">
-                    <h3 className="mb-6 text-2xl font-bold">Informations</h3>
 
-                    <p>Studio : {game.developer}</p>
-                    <p>Éditeur : {game.publisher}</p>
-                    <p>Pays : {game.country}</p>
+                <aside className="space-y-5 rounded-3xl bg-zinc-900 p-8">
 
-                    <hr className="my-5 border-zinc-700" />
+                    <h3 className="text-2xl font-bold">
+                        Informations
+                    </h3>
 
                     <p>Genre : {game.genre}</p>
-                    <p>Date : {game.releaseDate.toISOString().slice(0, 10)}</p>
+
+                    <p>
+                        Sortie :{" "}
+                        {game.releaseDate
+                            .toISOString()
+                            .slice(0, 10)}
+                    </p>
+
                     <p>Statut : {game.status}</p>
 
-                    <hr className="my-5 border-zinc-700" />
 
-                    <p>Coop : {game.coop ? "Oui" : "Non"}</p>
-                    <p>Manette : {game.controller ? "Oui" : "Non"}</p>
+                    <hr className="border-zinc-700" />
+
+
+                    <p>
+                        ⭐ Note :{" "}
+                        {game.rating ?? "N/A"}
+                    </p>
+
+                    <p>
+                        🏆 Metacritic :{" "}
+                        {game.metacritic ?? "N/A"}
+                    </p>
+
+                    <p>
+                        ⏱ Temps moyen :{" "}
+                        {game.playtime ?? "?"} h
+                    </p>
+
+
+                    <hr className="border-zinc-700" />
+
+
+                    <p>
+                        Plateformes :
+                        <br />
+                        {game.platforms}
+                    </p>
+
+
+                    {game.stores && (
+                        <p>
+                            Stores :
+                            <br />
+                            {game.stores}
+                        </p>
+                    )}
+
+
+                    {game.tags && (
+                        <p>
+                            Tags :
+                            <br />
+                            {game.tags}
+                        </p>
+                    )}
+
                 </aside>
+
             </section>
+
         </main>
     );
 }
