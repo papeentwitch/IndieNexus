@@ -8,15 +8,16 @@ function cleanHtml(value: string | undefined) {
 }
 
 function safeDate(value: string | undefined) {
-    if (!value || value === "Coming soon") return new Date();
+    if (!value || value === "Coming soon") return new Date("2099-01-01");
 
     const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? new Date("2099-01-01") : date;
+}
 
-    if (Number.isNaN(date.getTime())) {
-        return new Date();
-    }
-
-    return date;
+function getStatus(data: any) {
+    if (data.release_date?.coming_soon) return "upcoming";
+    if (data.genres?.some((g: any) => g.description?.toLowerCase().includes("early access"))) return "early_access";
+    return "released";
 }
 
 async function main() {
@@ -25,8 +26,7 @@ async function main() {
     );
 
     const steamSpyGames = await response.json();
-
-    const appIds = Object.keys(steamSpyGames).slice(0, 50);
+    const appIds = Object.keys(steamSpyGames).slice(0, 150);
 
     for (const appId of appIds) {
         const detailsResponse = await fetch(
@@ -40,11 +40,24 @@ async function main() {
 
         const data = item.data;
 
+        const categories = data.categories?.map((c: any) => c.description.toLowerCase()) ?? [];
+        const genres = data.genres?.map((g: any) => g.description.toLowerCase()) ?? [];
+
+        const hasDemo =
+            Boolean(data.demos?.length) ||
+            categories.some((item: string) => item.includes("demo"));
+
+        const hasPlaytest =
+            data.name.toLowerCase().includes("playtest") ||
+            categories.some((item: string) => item.includes("playtest"));
+
         const screenshots =
             data.screenshots
                 ?.slice(0, 5)
                 .map((screenshot: any) => screenshot.path_full)
                 .join(",") ?? data.header_image ?? null;
+
+        const status = getStatus(data);
 
         await prisma.game.upsert({
             where: {
@@ -52,6 +65,7 @@ async function main() {
             },
 
             update: {
+                steamAppId: Number(appId),
                 title: data.name,
                 description: cleanHtml(data.short_description),
                 image: data.header_image ?? "",
@@ -59,22 +73,27 @@ async function main() {
                 publisher: data.publishers?.join(", ") ?? "Unknown",
                 platforms: "PC",
                 releaseDate: safeDate(data.release_date?.date),
-                status: data.release_date?.coming_soon ? "upcoming" : "released",
+                releaseDateText: data.release_date?.date ?? null,
+                status,
+                hasDemo,
+                hasPlaytest,
                 controller: Boolean(data.controller_support),
                 steamUrl: `https://store.steampowered.com/app/${appId}`,
                 stores: "Steam",
-                tags: "Steam,Indie",
+                tags: [...genres, "steam", "indie"].join(","),
                 screenshots,
             },
 
             create: {
                 slug: `steam-${appId}`,
+                steamAppId: Number(appId),
                 title: data.name,
                 description: cleanHtml(data.short_description),
                 genre: "Indie",
                 platforms: "PC",
                 releaseDate: safeDate(data.release_date?.date),
-                status: data.release_date?.coming_soon ? "upcoming" : "released",
+                releaseDateText: data.release_date?.date ?? null,
+                status,
                 image: data.header_image ?? "",
                 developer: data.developers?.join(", ") ?? "Unknown",
                 publisher: data.publishers?.join(", ") ?? "Unknown",
@@ -82,14 +101,20 @@ async function main() {
                 multiplayer: false,
                 coop: false,
                 controller: Boolean(data.controller_support),
+                hasDemo,
+                hasPlaytest,
                 steamUrl: `https://store.steampowered.com/app/${appId}`,
                 stores: "Steam",
-                tags: "Steam,Indie",
+                tags: [...genres, "steam", "indie"].join(","),
                 screenshots,
             },
         });
 
-        console.log("Steam imported:", data.name);
+        console.log("Steam imported:", data.name, "-", status, {
+            hasDemo,
+            hasPlaytest,
+            release: data.release_date?.date,
+        });
     }
 
     console.log("Steam import completed");

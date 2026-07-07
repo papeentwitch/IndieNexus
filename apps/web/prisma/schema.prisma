@@ -29,6 +29,10 @@ model Game {
   rating          Float?
   metacritic      Int?
   playtime        Int?
+  steamAppId       Int?
+  releaseDateText  String?
+  hasDemo          Boolean @default(false)
+  hasPlaytest      Boolean @default(false)
 
   screenshots     String?
   stores          String?

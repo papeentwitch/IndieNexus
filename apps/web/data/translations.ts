@@ -7,16 +7,23 @@ export const translations = {
     title: "Découvrez la nouvelle génération de jeux indépendants.",
     subtitle:
       "Explorez les jeux indépendants du monde entier, leurs studios, plateformes et actualités.",
+
     search: "Rechercher un jeu, studio, genre...",
 
-    discoveries: "Découvertes à venir",
+    discoveries: "Découvertes",
     upcomingReleases: "📅 Prochaines sorties",
 
     allPlatforms: "Toutes les plateformes",
+
     allStatus: "Tous les statuts",
+
     released: "Disponible",
     upcoming: "Prochainement",
     development: "En développement",
+
+    demo: "Démo jouable",
+    playtest: "Playtest",
+    earlyAccess: "Accès anticipé",
 
     coop: "Coop",
     controller: "Manette",
@@ -26,15 +33,15 @@ export const translations = {
 
     description: "Description",
     information: "Informations",
-    studio: "Studio",
-    publisher: "Éditeur",
-    country: "Pays",
+
     genre: "Genre",
     date: "Date",
     status: "Statut",
+
+    website: "Site officiel",
+
     yes: "Oui",
     no: "Non",
-    website: "Site officiel",
   },
 
   en: {
@@ -45,16 +52,23 @@ export const translations = {
     title: "Discover the next generation of indie games.",
     subtitle:
       "Explore indie games worldwide, studios, platforms and gaming news.",
+
     search: "Search games, studios, genres...",
 
-    discoveries: "Upcoming discoveries",
+    discoveries: "Discoveries",
     upcomingReleases: "📅 Upcoming releases",
 
     allPlatforms: "All platforms",
-    allStatus: "All status",
+
+    allStatus: "All statuses",
+
     released: "Released",
     upcoming: "Coming soon",
     development: "In development",
+
+    demo: "Playable demo",
+    playtest: "Playtest",
+    earlyAccess: "Early Access",
 
     coop: "Coop",
     controller: "Controller",
@@ -64,15 +78,15 @@ export const translations = {
 
     description: "Description",
     information: "Information",
-    studio: "Studio",
-    publisher: "Publisher",
-    country: "Country",
+
     genre: "Genre",
     date: "Date",
     status: "Status",
+
+    website: "Official website",
+
     yes: "Yes",
     no: "No",
-    website: "Website",
   },
 };
 

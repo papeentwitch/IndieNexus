@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Filters } from "./Filters";
 import { GameCard } from "./GameCard";
@@ -8,7 +8,6 @@ import { Header } from "./Header";
 import { SearchBar } from "./SearchBar";
 
 import { Language, translations } from "../data/translations";
-import { useEffect } from "react";
 import { LANGUAGE_STORAGE_KEY } from "../lib/language";
 
 type Game = {
@@ -26,6 +25,8 @@ type Game = {
     coop: boolean;
     controller: boolean;
     translations: {
+        id: number;
+        gameId: number;
         locale: string;
         title: string;
         description: string;
@@ -40,6 +41,11 @@ type Props = {
 
 export function HomeClient({ games, upcomingGames, platforms }: Props) {
     const [language, setLanguage] = useState<Language>("fr");
+    const [search, setSearch] = useState("");
+    const [platform, setPlatform] = useState("");
+    const [status, setStatus] = useState("");
+    const [coop, setCoop] = useState(false);
+    const [controller, setController] = useState(false);
 
     useEffect(() => {
         const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
@@ -53,23 +59,32 @@ export function HomeClient({ games, upcomingGames, platforms }: Props) {
         setLanguage(value);
         localStorage.setItem(LANGUAGE_STORAGE_KEY, value);
     }
-    const [search, setSearch] = useState("");
-    const [platform, setPlatform] = useState("");
-    const [status, setStatus] = useState("");
-    const [coop, setCoop] = useState(false);
-    const [controller, setController] = useState(false);
 
     const text = translations[language];
 
+    function getDescription(game: Game) {
+        if (language === "fr") {
+            return (
+                game.translations.find((item) => item.locale === "fr")?.description ??
+                game.description
+            );
+        }
+
+        return game.description;
+    }
+
     const filteredGames = games.filter((game) => {
         const query = search.toLowerCase();
+
         const gamePlatforms = game.platforms
             .split(",")
             .map((item) => item.trim());
 
+        const description = getDescription(game);
+
         const matchesSearch =
             game.title.toLowerCase().includes(query) ||
-            game.description.toLowerCase().includes(query) ||
+            description.toLowerCase().includes(query) ||
             game.genre.toLowerCase().includes(query) ||
             game.platforms.toLowerCase().includes(query);
 
@@ -123,6 +138,9 @@ export function HomeClient({ games, upcomingGames, platforms }: Props) {
                         released: text.released,
                         upcoming: text.upcoming,
                         development: text.development,
+                        demo: text.demo,
+                        playtest: text.playtest,
+                        earlyAccess: text.earlyAccess,
                         coop: text.coop,
                         controller: text.controller,
                     }}
@@ -147,17 +165,9 @@ export function HomeClient({ games, upcomingGames, platforms }: Props) {
                                 key={game.id}
                                 slug={game.slug}
                                 title={game.title}
-                                description={
-                                    language === "fr"
-                                        ? game.translations.find(
-                                            (item) => item.locale === "fr"
-                                        )?.description ?? game.description
-                                        : game.description
-                                }
+                                description={getDescription(game)}
                                 genre={game.genre}
-                                platforms={game.platforms
-                                    .split(",")
-                                    .map((item) => item.trim())}
+                                platforms={game.platforms.split(",").map((item) => item.trim())}
                                 releaseDate={new Date(game.releaseDate)
                                     .toISOString()
                                     .slice(0, 10)}
@@ -181,13 +191,7 @@ export function HomeClient({ games, upcomingGames, platforms }: Props) {
                             key={game.id}
                             slug={game.slug}
                             title={game.title}
-                            description={
-                                language === "fr"
-                                    ? game.translations.find(
-                                        (item) => item.locale === "fr"
-                                    )?.description ?? game.description
-                                    : game.description
-                            }
+                            description={getDescription(game)}
                             genre={game.genre}
                             platforms={game.platforms.split(",").map((item) => item.trim())}
                             releaseDate={new Date(game.releaseDate)

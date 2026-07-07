@@ -26,6 +26,7 @@ type GameDetail = {
     tags: string | null;
     screenshots: string | null;
     officialWebsite: string | null;
+    steamUrl: string | null;
     translations: {
         locale: string;
         title: string;
@@ -128,14 +129,27 @@ export function GameDetailClient({ game }: Props) {
                         </section>
                     )}
 
-                    {game.officialWebsite && (
-                        <Link
-                            href={game.officialWebsite}
-                            className="mt-10 inline-block rounded-xl bg-white px-6 py-3 text-black"
-                        >
-                            {text.website}
-                        </Link>
-                    )}
+                    <div className="mt-10 flex gap-4">
+                        {game.steamUrl && (
+                            <Link
+                                href={game.steamUrl}
+                                target="_blank"
+                                className="rounded-xl bg-white px-6 py-3 text-black"
+                            >
+                                Steam
+                            </Link>
+                        )}
+
+                        {game.officialWebsite && (
+                            <Link
+                                href={game.officialWebsite}
+                                target="_blank"
+                                className="rounded-xl bg-zinc-900 px-6 py-3 text-white"
+                            >
+                                {text.website}
+                            </Link>
+                        )}
+                    </div>
                 </div>
 
                 <aside className="space-y-5 rounded-3xl bg-zinc-900 p-8">

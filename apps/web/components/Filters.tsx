@@ -18,6 +18,9 @@ type Props = {
         released: string;
         upcoming: string;
         development: string;
+        demo: string;
+        playtest: string;
+        earlyAccess: string;
         coop: string;
         controller: string;
     };
@@ -60,6 +63,9 @@ export function Filters({
                 <option value="released">{text.released}</option>
                 <option value="upcoming">{text.upcoming}</option>
                 <option value="development">{text.development}</option>
+                <option value="demo">{text.demo}</option>
+                <option value="playtest">{text.playtest}</option>
+                <option value="early_access">{text.earlyAccess}</option>
             </select>
 
             <button
