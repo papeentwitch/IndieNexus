@@ -9,7 +9,21 @@ import { SearchBar } from "../components/SearchBar";
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>("fr");
+  const [search, setSearch] = useState("");
   const text = translations[language];
+  const filteredGames = games.filter((game) => {
+    const query = search.toLowerCase();
+
+    return (
+      game.title.toLowerCase().includes(query) ||
+      game.description.toLowerCase().includes(query) ||
+      game.genre.toLowerCase().includes(query) ||
+      game.platforms
+        .join(" ")
+        .toLowerCase()
+        .includes(query)
+    );
+  });
 
   return (
     <main className="min-h-screen bg-black text-white">
@@ -28,14 +42,18 @@ export default function Home() {
 
         <p className="mt-6 max-w-xl text-xl text-gray-400">{text.subtitle}</p>
 
-        <SearchBar placeholder={text.search} />
+        <SearchBar
+          placeholder={text.search}
+          value={search}
+          onChange={setSearch}
+        />
       </section>
 
       <section className="px-12">
         <h3 className="mb-8 text-2xl font-bold">{text.discoveries}</h3>
 
         <div className="grid grid-cols-3 gap-8">
-          {games.map((game) => (
+          {filteredGames.map((game) => (
             <GameCard
               key={game.id}
               title={game.title}
